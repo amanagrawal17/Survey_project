@@ -3,6 +3,9 @@ from rest_framework import serializers
 from surveyapp.models import User
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+
+
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,6 +40,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['email', 'first_name', 'last_name']
         
+        
 class UserChangePasswordSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
     class Meta:
@@ -52,8 +56,9 @@ class UserChangePasswordSerializer(serializers.Serializer):
         user.save()
         return attrs
     
+    
 class RestPasswordEmailSerializer(serializers.Serializer):
-    emsil = serializers.EmailField(max_length=255)
+    email = serializers.EmailField(max_length=255)
     class Meta :
         fields = ['email']
         
@@ -61,5 +66,12 @@ class RestPasswordEmailSerializer(serializers.Serializer):
         email = attrs.get('email')
         if User.objects.filter(email=email).exists():
             user = User.objects.get(email=email)
+            uid = urlsafe_base64_encode(force_bytes(user.first_name))
+            print('Encoded UID', uid)
+            token = PasswordResetTokenGenerator().make_token(user)
+            print('Password Reset Token', token)
+            link = 'http://localhost:3000/api/user/reset/'+uid+'/'+token
+            print('Password reset link ',link)
+            return attrs
         else:
             raise validationErr('You are not a registered User')
