@@ -1,5 +1,5 @@
 from django.urls import path
-from surveyapp.views import UserRegisterView, UserLoginView, UserProfileView , UserChangePasswordView, ResetPasswordEmailView
+from surveyapp.views import UserRegisterView, UserLoginView, UserProfileView , UserChangePasswordView, ResetPasswordEmailView , UserPasswordResetView
 
 
 urlpatterns = [
@@ -8,4 +8,5 @@ urlpatterns = [
     path('profile/', UserProfileView.as_view(), name='profile'),
     path('changepassword/', UserChangePasswordView.as_view(), name='changepassword'),
     path('resetpasswordemail/', ResetPasswordEmailView.as_view(), name='resetpasswordemail'),
+    path('resetpassword/<uid>/<token>/', UserPasswordResetView.as_view(), name='resetpassword'),
 ]

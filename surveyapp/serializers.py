@@ -43,6 +43,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         
 class UserChangePasswordSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
+    # password2 = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
     class Meta:
         fields = ['password']
         
@@ -66,7 +67,7 @@ class RestPasswordEmailSerializer(serializers.Serializer):
         email = attrs.get('email')
         if User.objects.filter(email=email).exists():
             user = User.objects.get(email=email)
-            uid = urlsafe_base64_encode(force_bytes(user.first_name))
+            uid = urlsafe_base64_encode(force_bytes(user.email))
             print('Encoded UID', uid)
             token = PasswordResetTokenGenerator().make_token(user)
             print('Password Reset Token', token)
@@ -75,3 +76,30 @@ class RestPasswordEmailSerializer(serializers.Serializer):
             return attrs
         else:
             raise validationErr('You are not a registered User')
+        
+
+class UserPasswordResetSerializer(serializers.Serializer):
+    password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
+    password2 = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
+    class Meta:
+        fields = ['password','password2']
+        
+    def validate(self, attrs):
+        try:
+            password = attrs.get('password')
+            password2 = attrs.get('password2')
+            uid = self.context.get('uid')
+            token = self.context.get('token')
+            if password != password2:
+                raise serializer.ValidationError("Password and Confirm Password doesn't match")
+            id = smart_str(urlsafe_base64_decode(uid))
+            user = User.objects.get(email=id)
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                raise ValidationError('Token is not Valid or Expired')      
+            user.set_password(password)
+            user.save()
+            return attrs
+            
+        except  DjangoUnicodeDecodeError as identifier:
+            PasswordResetTokenGenerator().check_token(user, token)
+            raise ValidationError('Token is not Valid or Expired')  
