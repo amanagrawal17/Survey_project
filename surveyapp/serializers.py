@@ -4,7 +4,7 @@ from surveyapp.models import User
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
-
+from surveyapp.utils import Util
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -71,8 +71,15 @@ class RestPasswordEmailSerializer(serializers.Serializer):
             print('Encoded UID', uid)
             token = PasswordResetTokenGenerator().make_token(user)
             print('Password Reset Token', token)
-            link = 'http://localhost:3000/api/user/reset/'+uid+'/'+token
+            link = 'http://localhost:8000/app/resetpassword/'+uid+'/'+token
             print('Password reset link ',link)
+            body = 'Click Following Link to Reset Your password : ' +link
+            data = {
+                'subject' : 'Reset your Password',
+                'body': body,
+                'to_email': user.email
+            }
+            Util.send_email(data)
             return attrs
         else:
             raise validationErr('You are not a registered User')

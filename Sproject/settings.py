@@ -10,8 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+
 from datetime import timedelta
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@#eg6ukxw!)q*x%^4q1$dh(an^^v%sbv-kdug1$$3$-l=mc$@e'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -56,6 +62,16 @@ MIDDLEWARE = [
 ]
 
 AUTH_USER_MODEL = 'surveyapp.User'
+
+
+EMAIL_BACKEND =os.getenv('EMAIL_BACKEND')
+EMAIL_HOST =os.getenv('EMAIL_HOST')
+EMAIL_USE_TLS =os.getenv('EMAIL_USE_TLS')
+EMAIL_PORT = os.getenv('EMAIL_PORT')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD =os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL =os.getenv('DEFAULT_FROM_EMAIL')
+
 
 ROOT_URLCONF = 'Sproject.urls'
 
@@ -187,6 +203,6 @@ PASSWORD_RESET_TIMEOUT = 300                     #300 Sec = 5 mins
 CORS_ALLOWED_ORIGINS = [
     # "https://example.com",
     # "https://sub.example.com",
-    # "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
 ]
