@@ -1,4 +1,3 @@
-import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
@@ -46,14 +45,13 @@ class UserManager(BaseUserManager):
 
 # Custom User Model
 class User(AbstractBaseUser):
-    # id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(verbose_name='Email', unique=True, max_length=255)
     first_name = models.CharField(max_length=240, null=True, blank=True)
     last_name = models.CharField(max_length=240, null=True, blank=True)
     password = models.CharField(max_length=240)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    picture = models.ImageField(null=True, blank=True)
+    picture = models.ImageField(upload_to="User_profile", blank=True)
     is_staff = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)

@@ -1,8 +1,8 @@
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.response import Response 
+from rest_framework import status , request
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
-from surveyapp.serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer, UserChangePasswordSerializer , RestPasswordEmailSerializer, UserPasswordResetSerializer
+from surveyapp.serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer, UserChangePasswordSerializer , RestPasswordEmailSerializer, UserPasswordResetSerializer, UserUpdateProfileSerializer
 from surveyapp.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
@@ -52,7 +52,28 @@ class UserProfileView(APIView):
     def get(self, request, format=None):
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+class UserUpdateProfileView(APIView):
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]  
+    # def post(self, request, format=None):
+    #     serializer = UserUpdateProfileSerializer(data=request.data, context={'user':request.user})
+    #     if serializer.is_valid(raise_exception=True):
+    #         # user = serializer.save()
+    #         return Response({'msg': 'Profile Updated Successfull'},
+    #         status=status.HTTP_201_CREATED)
+    #     return Response(serializer.erroes,status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request):
+        """
+        `Update User`
+        """
+        user = self.request.user
+        serializer = UserUpdateProfileSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+        
 class UserChangePasswordView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
