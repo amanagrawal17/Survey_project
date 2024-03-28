@@ -5,6 +5,7 @@ from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeErr
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from surveyapp.utils import Util
+import pathlib
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -36,9 +37,12 @@ class UserLoginSerializer(serializers.ModelSerializer):
         
         
 class UserProfileSerializer(serializers.ModelSerializer):
+    # picture_url = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = ['email', 'first_name', 'last_name', 'picture']
+
 
 class UserUpdateProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -115,3 +119,6 @@ class UserPasswordResetSerializer(serializers.Serializer):
         except  DjangoUnicodeDecodeError as identifier:
             PasswordResetTokenGenerator().check_token(user, token)
             raise ValidationError('Token is not Valid or Expired')  
+        
+        
+        # D:\vs code\certainty\DRF Projects\Sproject\media\

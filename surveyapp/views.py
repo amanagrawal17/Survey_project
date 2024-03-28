@@ -50,7 +50,9 @@ class UserProfileView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
+        # print("this is request" , request.user)
         serializer = UserProfileSerializer(request.user)
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserUpdateProfileView(APIView):
@@ -102,3 +104,8 @@ class UserPasswordResetView(APIView):
             return Response({'msg': 'Password Changed Successfull'},
             status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+    
+    
+    # D:\vs code\certainty\DRF Projects\Sproject\media\User_profile
