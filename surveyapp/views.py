@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
-from surveyapp.serializers import UserRegisterSerializer, UserLoginSerializer , UserProfileSerializer , UserChangePasswordSerializer , RestPasswordEmailSerializer,UserPasswordResetSerializer
+from surveyapp.serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer, UserChangePasswordSerializer , RestPasswordEmailSerializer, UserPasswordResetSerializer
 from surveyapp.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated

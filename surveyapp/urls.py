@@ -1,6 +1,7 @@
 from django.urls import path
 from surveyapp.views import UserRegisterView, UserLoginView, UserProfileView , UserChangePasswordView, ResetPasswordEmailView , UserPasswordResetView
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('register/', UserRegisterView.as_view(), name='register'),
