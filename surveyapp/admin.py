@@ -34,8 +34,10 @@ from surveyapp.models import *
 # admin.site.unregister(User)
 # Now register the new UserAdmin...
 
-
+# admin.site.unregister(Survey)
+admin.site.register(Survey)
 admin.site.register(User)
 admin.site.register(Question_types)
 admin.site.register(Questions)
 admin.site.register(Response)
+

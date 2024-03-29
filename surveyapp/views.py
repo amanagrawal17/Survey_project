@@ -1,8 +1,10 @@
 from rest_framework.response import Response 
 from rest_framework import status , request
+from .models import Survey
+from rest_framework import generics
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
-from surveyapp.serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer, UserChangePasswordSerializer , RestPasswordEmailSerializer, UserPasswordResetSerializer, UserUpdateProfileSerializer
+from surveyapp.serializers import UserRegisterSerializer, UserLoginSerializer, UserProfileSerializer, UserChangePasswordSerializer , RestPasswordEmailSerializer, UserPasswordResetSerializer, UserUpdateProfileSerializer,SurveyCreateSerializer,SurveyDetailsSerializer,SurveyUpdateSerializer
 from surveyapp.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
@@ -104,7 +106,39 @@ class UserPasswordResetView(APIView):
             status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+
+class SurveyCreateView(APIView):
+    renderer_classes = [UserRenderer]
+    # permission_classes = [IsAuthenticated]
+    def post(self, request, format=None):
+        serializer = SurveyCreateSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            survey = serializer.save()
+            # token = get_tokens_for_user(survey)
+            return Response({'msg': 'Survey Created Successfull'},
+            status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SurveyDetailView(APIView):
+    lookup_field = 's_id'  
+
+    def get(self, request, s_id, format=None):  
+        try:
+            survey = Survey.objects.get(s_id=s_id)  
+            serializer = SurveyDetailsSerializer(survey)
+            return Response(serializer.data)
+        except Survey.DoesNotExist:
+            return Response({'error': 'Survey not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+class SurveyUpdateView(generics.UpdateAPIView):
+    queryset = Survey.objects.all()
+    serializer_class = SurveyUpdateSerializer
+    lookup_field = 's_id'
     
     
-    
-    
+class SurveyDeleteView(generics.DestroyAPIView):
+    queryset = Survey.objects.all()
+    serializer_class = SurveyDetailsSerializer
+    lookup_field = 's_id'

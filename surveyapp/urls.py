@@ -1,5 +1,7 @@
 from django.urls import path
-from surveyapp.views import UserRegisterView, UserLoginView, UserProfileView , UserChangePasswordView, ResetPasswordEmailView , UserPasswordResetView , UserUpdateProfileView
+from surveyapp.views import( UserRegisterView, UserLoginView, 
+UserProfileView , UserChangePasswordView, ResetPasswordEmailView , UserPasswordResetView , UserUpdateProfileView,SurveyCreateView,SurveyDetailView
+,SurveyUpdateView,SurveyDeleteView)
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -11,4 +13,8 @@ urlpatterns = [
     path('changepassword/', UserChangePasswordView.as_view(), name='changepassword'),
     path('resetpasswordemail/', ResetPasswordEmailView.as_view(), name='resetpasswordemail'),
     path('resetpassword/<uid>/<token>/', UserPasswordResetView.as_view(), name='resetpassword'),
+    path('surveycreate/', SurveyCreateView.as_view(), name='surveycreate'),
+    path('survey/<int:s_id>/update/', SurveyUpdateView.as_view(), name='surveyupdate'),
+    path('survey/<int:s_id>/delete/', SurveyDeleteView.as_view(), name='surveydelete'),
+    path('surveydetail/<int:s_id>/', SurveyDetailView.as_view(), name='surveydetail'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

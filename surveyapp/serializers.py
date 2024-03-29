@@ -1,6 +1,6 @@
 from xml.dom import ValidationErr
 from rest_framework import serializers
-from surveyapp.models import User
+from surveyapp.models import User,Survey
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -121,4 +121,25 @@ class UserPasswordResetSerializer(serializers.Serializer):
             raise ValidationError('Token is not Valid or Expired')  
         
         
-        # D:\vs code\certainty\DRF Projects\Sproject\media\
+class SurveyCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Survey
+        fields = ['s_id', 's_name']
+        def validate(self, attrs):
+            s_id = attrs.get('s_id')
+            s_name = attrs.get('s_name')
+            return attrs
+        
+        def create(self, validate_data):
+            return Survey.objects.create_survey(**validate_data)
+        
+
+class SurveyDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Survey
+        fields = ['s_id', 's_name']
+
+class SurveyUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Survey
+        fields = ['s_name'] 

@@ -4,8 +4,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 #Custom User Manager
 class UserManager(BaseUserManager):
-    def create_user(self, email, password, first_name, last_name):
-                    # , created_at, updated_at):
+    def create_user(self, email, password, first_name, last_name
+                    , created_at, updated_at):
         if not email:
             raise ValueError("Email must be provided")
         if not password:
@@ -15,8 +15,8 @@ class UserManager(BaseUserManager):
             email = self.normalize_email(email),
             first_name = first_name,
             last_name = last_name,
-            # created_at = created_at,
-            # updated_at = updated_at,
+            created_at = created_at,
+            updated_at = updated_at,
             
             
         )
@@ -83,9 +83,9 @@ class User(AbstractBaseUser):
      
 class Survey(models.Model):
     s_id = models.IntegerField(default=False)      
-    s_name = models.CharField(max_length=2048, null=False, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    s_name = models.CharField(max_length=240, null=False, blank=False)
+    # created_at = models.DateTimeField(auto_now_add=True)
+    # updated_at = models.DateTimeField(auto_now=True)
     
 
 class Question_types(models.Model):
