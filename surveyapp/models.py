@@ -81,8 +81,7 @@ class User(AbstractBaseUser):
         return self.is_admin
         
      
-class Survey(models.Model):
-    s_id = models.IntegerField(default=False)      
+class Survey(models.Model):     
     s_name = models.CharField(max_length=240, null=False, blank=False)
     # created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now=True)
@@ -101,14 +100,12 @@ class Question_types(models.Model):
 
 
 class Questions(models.Model):
-    q_id = models.IntegerField(default=False)
     q_text = models.CharField(max_length=500)
     q_type = models.ForeignKey(Question_types, null=False, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 class Response(models.Model):
-    r_id = models.IntegerField(default=False)
     r_Data = models.CharField(max_length=2024)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

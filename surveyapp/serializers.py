@@ -41,7 +41,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'picture']
+        fields = ['id','email', 'first_name', 'last_name', 'picture']
 
 
 class UserUpdateProfileSerializer(serializers.ModelSerializer):
@@ -124,9 +124,8 @@ class UserPasswordResetSerializer(serializers.Serializer):
 class SurveyCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
-        fields = ['s_id', 's_name']
+        fields = [ 's_name']
         def validate(self, attrs):
-            s_id = attrs.get('s_id')
             s_name = attrs.get('s_name')
             return attrs
         
@@ -137,7 +136,7 @@ class SurveyCreateSerializer(serializers.ModelSerializer):
 class SurveyDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
-        fields = ['s_id', 's_name']
+        fields = ['id','s_name']
 
 class SurveyUpdateSerializer(serializers.ModelSerializer):
     class Meta:

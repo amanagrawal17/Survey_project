@@ -59,13 +59,6 @@ class UserProfileView(APIView):
 class UserUpdateProfileView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]  
-    # def post(self, request, format=None):
-    #     serializer = UserUpdateProfileSerializer(data=request.data, context={'user':request.user})
-    #     if serializer.is_valid(raise_exception=True):
-    #         # user = serializer.save()
-    #         return Response({'msg': 'Profile Updated Successfull'},
-    #         status=status.HTTP_201_CREATED)
-    #     return Response(serializer.erroes,status=status.HTTP_400_BAD_REQUEST)
     def put(self, request):
         """
         `Update User`
@@ -109,7 +102,6 @@ class UserPasswordResetView(APIView):
 
 class SurveyCreateView(APIView):
     renderer_classes = [UserRenderer]
-    # permission_classes = [IsAuthenticated]
     def post(self, request, format=None):
         serializer = SurveyCreateSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -121,24 +113,23 @@ class SurveyCreateView(APIView):
 
 
 class SurveyDetailView(APIView):
-    lookup_field = 's_id'  
-
-    def get(self, request, s_id, format=None):  
-        try:
-            survey = Survey.objects.get(s_id=s_id)  
-            serializer = SurveyDetailsSerializer(survey)
-            return Response(serializer.data)
-        except Survey.DoesNotExist:
-            return Response({'error': 'Survey not found'}, status=status.HTTP_404_NOT_FOUND)
+    def get(self, request,  format=None):  
+        survey = Survey.objects.all() 
+        serializer = SurveyDetailsSerializer(survey, many=True)
+        return Response(serializer.data)
+        
+        
+        
+  
         
         
 class SurveyUpdateView(generics.UpdateAPIView):
     queryset = Survey.objects.all()
     serializer_class = SurveyUpdateSerializer
-    lookup_field = 's_id'
+    
     
     
 class SurveyDeleteView(generics.DestroyAPIView):
     queryset = Survey.objects.all()
     serializer_class = SurveyDetailsSerializer
-    lookup_field = 's_id'
+    
