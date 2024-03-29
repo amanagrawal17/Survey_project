@@ -83,7 +83,10 @@ class User(AbstractBaseUser):
      
 class Survey(models.Model):
     s_id = models.IntegerField(default=False)      
-    s_type = models.CharField(max_length=2048, null=False, blank=False)
+    s_name = models.CharField(max_length=2048, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
 
 class Question_types(models.Model):
     TYPES = (

@@ -50,7 +50,6 @@ class UserProfileView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
-        # print("this is request" , request.user)
         serializer = UserProfileSerializer(request.user)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
