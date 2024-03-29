@@ -96,12 +96,11 @@ class Question_types(models.Model):
         (5, 'rating scale')
     )
     type = models.CharField(max_length=8, choices=TYPES, default='radio')
-    text = models.CharField(max_length=2048, null=False, blank=False)
-
 
 class Questions(models.Model):
     q_text = models.CharField(max_length=500)
     q_type = models.ForeignKey(Question_types, null=False, on_delete=models.DO_NOTHING)
+    q_options = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
