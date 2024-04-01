@@ -180,3 +180,27 @@ class QuestionUpdateView(generics.UpdateAPIView):
 class QuestionDeleteView(generics.DestroyAPIView):
     queryset = Questions.objects.all()
     serializer_class = QuestionDetailsSerializer
+    
+    
+
+class ResponseCreateView(generics.CreateAPIView):
+    queryset = Responses.objects.all()
+    serializer_class = ResponseSerializer
+
+class ResponseUpdateView(generics.UpdateAPIView):
+    queryset = Responses.objects.all()
+    serializer_class = ResponseSerializer
+
+# class ResponseRetrieveView(generics.RetrieveAPIView):
+#     queryset = Responses.objects.all()
+#     serializer_class = ResponseSerializer
+    
+class QuestionDetailView(APIView):
+    def get(self, request,  format=None):
+        responses = Responses.objects.all()
+        serializer = ResponseSerializer(responses, many=True)
+        return Response(serializer.data)
+
+class ResponseDeleteView(generics.DestroyAPIView):
+    queryset = Responses.objects.all()
+    serializer_class = ResponseSerializer
