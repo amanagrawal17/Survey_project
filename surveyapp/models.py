@@ -118,6 +118,10 @@ class Questions(models.Model):
     # updated_at = models.DateTimeField(auto_now=True)
 
 class Responses(models.Model):
-    r_Data = models.CharField(max_length=2024)
+    question_id = models.ForeignKey(Questions, on_delete=models.CASCADE)
+    response_data = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Response to {self.question.text}"
