@@ -177,3 +177,9 @@ class QuestionUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Questions
         fields = ["heading", "type", "options"]         
+
+
+class ResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Responses
+        fields = ["id" , "question_id", "response_data"]
