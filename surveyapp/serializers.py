@@ -1,6 +1,6 @@
 from xml.dom import ValidationErr
 from rest_framework import serializers
-from surveyapp.models import User,Survey
+from surveyapp.models import *
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -137,8 +137,43 @@ class SurveyDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
         fields = ['id','s_name']
+        
+
 
 class SurveyUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
         fields = ['s_name'] 
+        
+        
+class QuestiontypesDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question_types
+        fields = ['id', 'type']
+        
+                
+class QuestionCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questions
+        fields = [ "heading", "type", "options"]
+        
+        def validate(self, attrs):
+            heading = attrs.get('heading')
+            type = attrs.get('type')
+            options = attrs.get('options')
+            return attrs
+        
+        def create(self, validate_data):
+            return Questions.objects.create_survey(**validate_data)
+        
+        
+class QuestionDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questions
+        fields = ['id',"heading", "type", "options"]
+        
+
+class QuestionUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questions
+        fields = ["heading", "type", "options"]         
