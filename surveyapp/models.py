@@ -89,22 +89,35 @@ class Survey(models.Model):
 
 class Question_types(models.Model):
     TYPES = (
-        (1, 'radio'),
-        (2, 'checkbox'),
-        (3, 'text'),
-        (4, 'multiple choice'),
-        (5, 'rating scale')
+    ('radio', 'Radio'),
+    ('checkbox', 'Checkbox'),
+    ('text', 'Text'),
+    ('multiple_choice', 'Multiple Choice'),
+    ('rating_scale', 'Rating Scale')
     )
-    type = models.CharField(max_length=8, choices=TYPES, default='radio')
+    type = models.CharField(max_length=20, choices=TYPES)
+
+    def __str__(self):
+        return self.type
 
 class Questions(models.Model):
-    q_text = models.CharField(max_length=500)
-    q_type = models.ForeignKey(Question_types, null=False, on_delete=models.DO_NOTHING)
-    q_options = models.JSONField()
+    
+    heading = models.CharField(max_length=255)
+    type = models.ForeignKey(Question_types, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    options = models.JSONField()
 
-class Response(models.Model):
+    def __str__(self):
+        return self.heading
+    
+    # q_text = models.CharField(max_length=500)
+    # q_type = models.ForeignKey(Question_types, null=False, on_delete=models.DO_NOTHING)
+    # q_options = models.JSONField()
+    # created_at = models.DateTimeField(auto_now_add=True)
+    # updated_at = models.DateTimeField(auto_now=True)
+
+class Responses(models.Model):
     r_Data = models.CharField(max_length=2024)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
