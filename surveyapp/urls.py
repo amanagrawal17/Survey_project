@@ -20,5 +20,9 @@ urlpatterns = [
     path('questiondetail', QuestionDetailView.as_view(), name='questiondetail'),
     path('questionupdate/<int:pk>', QuestionUpdateView.as_view(), name='questionupdate'),
     path('questiondelete/<int:pk>', QuestionDeleteView.as_view(), name='questiondelete'),
+    path('responsescreate', ResponseCreateView.as_view(), name='responsecreate'),
+    path('responsesupdate/<int:pk>', ResponseUpdateView.as_view(), name='responseupdate'),
+    path('responsesdetail', QuestionDetailView.as_view(), name='responsedetail'),
+    path('responses/delete/<int:pk>', ResponseDeleteView.as_view(), name='responsedelete'),
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
