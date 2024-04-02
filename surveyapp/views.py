@@ -153,34 +153,61 @@ class QuestiontypesDetailView(APIView):
         return Response(serializer.data)
 
 
-class QuestionCreateView(APIView):
-    renderer_classes = [UserRenderer]
+# class QuestionCreateView(APIView):
+#     renderer_classes = [UserRenderer]
 
-    def post(self, request, format=None):
-        serializer = QuestionCreateSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            question = serializer.save()
-            # token = get_tokens_for_user(survey)
-            return Response({'msg': 'Question Created Successfull'})
+#     def post(self, request, format=None):
+#         serializer = QuestionCreateSerializer(data=request.data)
+#         if serializer.is_valid(raise_exception=True):
+#             question = serializer.save()
+#             # token = get_tokens_for_user(survey)
+#             return Response({'msg': 'Questions Created Successfull'})
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# class QuestionDetailView(APIView):
+#     def get(self, request,  format=None):
+#         question = Questions.objects.all()
+#         serializer = QuestionDetailsSerializer(question, many=True)
+#         return Response(serializer.data)
+
+
+# class QuestionUpdateView(generics.UpdateAPIView):
+#     queryset = Questions.objects.all()
+#     serializer_class = QuestionUpdateSerializer
+
+
+# class QuestionDeleteView(generics.DestroyAPIView):
+#     queryset = Questions.objects.all()
+#     serializer_class = QuestionDetailsSerializer
+    
+class QuestionAPIView(APIView):
+    serializer_class = QuestionSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class QuestionDetailView(APIView):
-    def get(self, request,  format=None):
-        question = Questions.objects.all()
-        serializer = QuestionDetailsSerializer(question, many=True)
+    def get(self, request, *args, **kwargs):
+        questions = Questions.objects.all()
+        serializer = self.serializer_class(questions, many=True)
         return Response(serializer.data)
 
+    def put(self, request, pk, *args, **kwargs):
+        question = Questions.objects.get(pk=pk)
+        serializer = self.serializer_class(question, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class QuestionUpdateView(generics.UpdateAPIView):
-    queryset = Questions.objects.all()
-    serializer_class = QuestionUpdateSerializer
-
-
-class QuestionDeleteView(generics.DestroyAPIView):
-    queryset = Questions.objects.all()
-    serializer_class = QuestionDetailsSerializer
-    
+    def delete(self, request, pk, *args, **kwargs):
+        question = Questions.objects.get(pk=pk)
+        question.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
     
 
 class ResponseCreateView(generics.CreateAPIView):

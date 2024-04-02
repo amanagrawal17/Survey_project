@@ -145,38 +145,45 @@ class SurveyUpdateSerializer(serializers.ModelSerializer):
         model = Survey
         fields = ['s_name'] 
         
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questions
+        fields = '__all__'
         
+                
 class QuestiontypesDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question_types
         fields = ['id', 'type']
         
                 
-class QuestionCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Questions
-        fields = [ "heading", "type", "options"]
+# class QuestionCreateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Questions
+#         fields = [ "heading", "type", "options"]
         
-        def validate(self, attrs):
-            heading = attrs.get('heading')
-            type = attrs.get('type')
-            options = attrs.get('options')
-            return attrs
+#         def validate(self, attrs):
+#             heading = attrs.get('heading')
+#             type = attrs.get('type')
+#             options = attrs.get('options')
+#             return attrs
         
-        def create(self, validate_data):
-            return Questions.objects.create_survey(**validate_data)
+#         def create(self, validate_data):
+#             return Questions.objects.create_survey(**validate_data)
         
         
-class QuestionDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Questions
-        fields = ['id',"heading", "type", "options"]
+# class QuestionDetailsSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Questions
+#         fields = ['id',"heading", "type", "options"]
         
 
-class QuestionUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Questions
-        fields = ["heading", "type", "options"]         
+# class QuestionUpdateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Questions
+#         fields = ["heading", "type", "options"]         
 
 
 class ResponseSerializer(serializers.ModelSerializer):
