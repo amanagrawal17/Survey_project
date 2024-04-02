@@ -111,11 +111,6 @@ class Questions(models.Model):
     def __str__(self):
         return self.heading
     
-    # q_text = models.CharField(max_length=500)
-    # q_type = models.ForeignKey(Question_types, null=False, on_delete=models.DO_NOTHING)
-    # q_options = models.JSONField()
-    # created_at = models.DateTimeField(auto_now_add=True)
-    # updated_at = models.DateTimeField(auto_now=True)
 
 class Responses(models.Model):
     question_id = models.ForeignKey(Questions, on_delete=models.CASCADE)
@@ -123,5 +118,5 @@ class Responses(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"Response to {self.question.text}"
+    # def __str__(self):
+    #     return f"Response to {self.question.text}"
