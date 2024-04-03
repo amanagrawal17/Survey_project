@@ -1,19 +1,31 @@
 from django.test import TestCase
-# from .models import User
+from .models import User
 
-# print("this is test")
-# class UserModelTest(TestCase):
-#     def test_create_user(self):
-#         print ("inside test create fun")
-#         email = "test@example.com"
-#         # name = "test user"
-#         password = "textpassword"
+class UserModelTest(TestCase):
+    def test_create_user(self):
+        print ("inside test create fun")
+        email = "test@example.com"
+        first_name = "test "
+        last_name = "user"
+        password = "textpassword"
         
-#         user = User.objects.create_user(email=email, name=name, password=password)
-#         print("Userr :", user)
-#         self.assertEqual(user.email, email)
-#         # self.assertEqual(user.name, name)
-#         self.assertFalse(user.is_active)
-#         self.assertFalse(user.is_admin)
-#         self.assertFalse(user.is_staff)
-#         self.assertTrue(user.check_password(password))
+        user = User.objects.create_user(email=email, first_name=first_name, last_name=last_name, password=password, created_at=None, updated_at=None)
+        print("Userr :", user)
+        self.assertEqual(user.email, email)
+        self.assertEqual(user.first_name, first_name)
+        self.assertEqual(user.last_name, last_name)
+        self.assertTrue(user.is_active)
+        self.assertFalse(user.is_admin)
+        self.assertFalse(user.is_staff)
+        self.assertTrue(user.check_password(password))
+
+
+
+# class FirstTestCase(TestCase):
+#     print ('class called')
+    
+#     def setup(self):
+#         print('setup called')
+        
+#     def test_equal(self):
+#         self.assertAlmostEqual(1, 2)
