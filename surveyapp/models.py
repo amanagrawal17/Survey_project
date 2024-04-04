@@ -5,8 +5,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 #Custom User Manager
 class UserManager(BaseUserManager):
     ''' Custom Table models class'''
-    def create_user(self, email, password, first_name, last_name
-                    , created_at, updated_at):
+    def create_user(self, email, password, first_name, last_name):
+                    # , created_at, updated_at):
         if not email:
             raise ValueError("Email must be provided")
         if not password:
@@ -16,8 +16,8 @@ class UserManager(BaseUserManager):
             email = self.normalize_email(email),
             first_name = first_name,
             last_name = last_name,
-            created_at = created_at,
-            updated_at = updated_at,    
+            # created_at = created_at,
+            # updated_at = updated_at,    
         )
         user.set_password(password)
         user.save(using=self._db)
