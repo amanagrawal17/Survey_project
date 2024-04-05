@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 #Custom User Manager
 class UserManager(BaseUserManager):
-    ''' Custom Table models class'''
+
     def create_user(self, email, password, first_name, last_name):
                     # , created_at, updated_at):
         if not email:
@@ -17,8 +17,12 @@ class UserManager(BaseUserManager):
             first_name = first_name,
             last_name = last_name,
             # created_at = created_at,
-            # updated_at = updated_at,    
+            # updated_at = updated_at,
+            
+            
+
         )
+        
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -32,14 +36,17 @@ class UserManager(BaseUserManager):
             email,
             password=password,
             first_name= first_name,
-            last_name= last_name,    
+            last_name= last_name,
+            
+            
+            
         )
         user.is_admin = True
         user.save(using=self._db)
         return user
+
 # Custom User Model
 class User(AbstractBaseUser):
-    ''' Custom user Table models class'''
     email = models.EmailField(verbose_name='Email', unique=True, max_length=255)
     first_name = models.CharField(max_length=240, null=True, blank=True)
     last_name = models.CharField(max_length=240, null=True, blank=True)
@@ -63,10 +70,12 @@ class User(AbstractBaseUser):
         "Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
         return self.is_admin
+
     def has_module_perms(self, app_label):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
+
     @property
     def is_staff(self):
         "Is the user a member of staff?"
@@ -74,16 +83,13 @@ class User(AbstractBaseUser):
         return self.is_admin
         
      
-class Survey(models.Model):  
-    ''' Survey Table models class'''   
+class Survey(models.Model):     
     s_name = models.CharField(max_length=240, null=False, blank=False)
     # created_at = models.DateTimeField(auto_now_add=True)
     # updated_at = models.DateTimeField(auto_now=True)
-    def __str__(self):
-        return self.s_name
+    
 
 class Question_types(models.Model):
-    ''' Question_Types Table models class'''
     TYPES = (
     ('radio', 'Radio'),
     ('checkbox', 'Checkbox'),
@@ -97,7 +103,7 @@ class Question_types(models.Model):
         return self.type
 
 class Questions(models.Model):
-    ''' Questions Table models class'''
+    
     heading = models.CharField(max_length=255)
     type = models.ForeignKey(Question_types, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -107,12 +113,12 @@ class Questions(models.Model):
     def __str__(self):
         return self.heading
     
+
 class Responses(models.Model):
-    ''' Responses Table models class'''
     question_id = models.ForeignKey(Questions, on_delete=models.CASCADE)
     response_data = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"Response to {self.question_id}"
+    # def __str__(self):
+    #     return f"Response to {self.question.text}"
