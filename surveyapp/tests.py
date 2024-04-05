@@ -1,6 +1,6 @@
-
+                # #this is the test case for the user profile view API ## 
 '''
-#this is the test case for the user profile view API
+
 # from rest_framework.test import APITestCase
 # from rest_framework import status
 # from django.contrib.auth import get_user_model
@@ -16,7 +16,7 @@
 #         self.client.force_authenticate(user=self.user)
 
 #     def test_get_user_profile(self):
-#         url = reverse('profile')  # Assuming you have configured the URL name for UserProfileView
+#         url = reverse('profile')  
 #         response = self.client.get(url)
 
 #         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -25,9 +25,8 @@
 #         self.assertEqual(response.data['last_name'], 'Doe')'''
 
 ###########################################################################################################################
-
+          ##  this is the test case for the user register view API##
 '''
-#this is the test case for the user register view API
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.contrib.auth import get_user_model
@@ -37,7 +36,7 @@ User = get_user_model()
 
 class UserRegisterViewTestCase(APITestCase):
     def test_user_register_view_success(self):
-        url = reverse('register')  # Assuming you have configured the URL name for UserRegisterView
+        url = reverse('register') 
         data = {
             'email': 'test@example.com',
             'password': 'password123',
@@ -53,34 +52,51 @@ class UserRegisterViewTestCase(APITestCase):
         self.assertEqual(response.data['msg'], 'Registration Successfull')
         '''
 
-# # from django.contrib.auth import get_user_model
-# # from rest_framework.test import APITestCase
-# # from rest_framework import status
-# # from django.urls import reverse
-# # from rest_framework.authtoken.models import Token
-# # from .serializers import UserProfileSerializer
 
-# # class UserProfileViewTestCase(APITestCase):
-# #     def setUp(self):
-# #         # Get the custom user model
-# #         User = get_user_model()
+####################################################################################
+                ## this is the test case for the user login view API##
 
-# #         # Create a user and authenticate
-# #         self.user = User.objects.create_user( email='test@example.com', password='password123')
-# #         self.token = Token.objects.create(user=self.user)
-# #         self.client.credentials(HTTP_AUTHORIZATION=f'Token {self.token.key}')
-# #         self.profile_url = reverse('user-profile')
+from rest_framework.test import APITestCase
+from rest_framework import status
+from django.contrib.auth import get_user_model
+from django.urls import reverse
+                
+User = get_user_model()
+class UserLoginViewTestCase(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(email='test@example.com', password='password123',first_name = 'John' , last_name = 'Doe')              
+                
+    def test_user_login_view_success(self):
+        url = reverse('login')  
+        data = {
+            'email': 'test@example.com',
+            'password': 'password123',
+        }
+        response = self.client.post(url, data, format='json')
 
-# #     def test_user_profile_view(self):
-# #         # Send a GET request to the user profile endpoint
-# #         response = self.client.get(self.profile_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue('token' in response.data)     
+               
+    def test_user_login_view_invalid_credentials(self):
+        url = reverse('login')  
+        data = {
+            'email': 'test@example.com',
+            'password': 'invalidpassword',
+        }
+        response = self.client.post(url, data, format='json')
 
-# #         # Assert the response status code is 200 OK
-# #         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertTrue('errors' in response.data)
+        
+        
+        
+#############################################################################
+                
+                
 
-# #         # Assert that the response data matches the user's profile data
-# #         expected_data = UserProfileSerializer(self.user).data
-# #         self.assertEqual(response.data, expected_data)
+
+
+
 
 
 
